@@ -20,11 +20,11 @@ const FooterCurrent_ = styled.div`
 export default function Footer() {
   return (
     <Footer_>
-      <i class="fa-solid fa-globe fa-lg" style={{ color: "#5D794C" }}></i>
+      <i className="fa-solid fa-globe fa-lg" style={{ color: "#5D794C" }}></i>
       <FooterCurrent_>
-        <i class="fa-solid fa-house fa-lg"></i>
+        <i className="fa-solid fa-house fa-lg"></i>
       </FooterCurrent_>
-      <i class="fa-solid fa-user fa-lg" style={{ color: "#5D794C" }}></i>
+      <i className="fa-solid fa-user fa-lg" style={{ color: "#5D794C" }}></i>
     </Footer_>
   );
 }
