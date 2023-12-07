@@ -10,6 +10,11 @@ const Header_ = styled.div`
   width: 100%;
   height: 60px;
 `;
+const HeaderInput = styled.input`
+  width: 280px;
+  height: 44px;
+  background-color: #f4f8f2;
+`;
 
 export default function Header({ setCategory, setSearchKeyword }) {
   const [searchClicked, setSearchClicked] = useState(false);
@@ -42,7 +47,7 @@ export default function Header({ setCategory, setSearchKeyword }) {
             <option value="passenger">동승자</option>
             <option value="car">렌트 차량</option>
           </select>
-          <input placeholder="Search Place..." onKeyDown={handleSubmit} />
+          <HeaderInput placeholder="Search Place..." onKeyDown={handleSubmit} />
           <i
             className="fa-solid fa-x"
             onClick={(e) => setSearchClicked(false)}
