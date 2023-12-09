@@ -9,14 +9,18 @@ import carImg from "../images/car.png";
 import routeImg from "../images/route.png";
 import passengerImg from "../images/passenger.png";
 import categoryConverter from "../utils/categoryConverter";
+import { Link, useNavigate } from "react-router-dom";
 
 const { kakao } = window;
 
 const ResultList = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   background: #fff;
   width: 100%;
   height: 33.33vh; /* 화면 하단 1/3까지만 올라오도록 설정 */
-  margin: 0;
+  margin-top: 30px;
   padding: 0;
   left: 0;
   text-align: left;
@@ -31,13 +35,17 @@ const ListHeader = styled.div`
   position: relative;
 `;
 
-const ListEl = styled.div`
+const ListEl = styled(Link)`
   display: flex;
-  border-bottom: 5px solid grey;
-  padding: 18px 65px 18px 39px;
+  width: 358px;
+  height: 54.5px;
+  border-bottom: 1px solid grey;
+  padding: 18px 65px 18px 23px;
 `;
 const ListElImage = styled.img`
-  margin: 3px;
+  width: 24px;
+  height: 24px;
+  margin-right: 23px;
 `;
 
 const ListElText = styled.div`
@@ -113,7 +121,13 @@ export default function Map({ category, searchKeyword }) {
         map.getBounds().contain(placePosition) &&
         (place.category === category || category === "all")
       ) {
-        inMapData.push([placePosition, place.name, place.category]);
+        inMapData.push([
+          placePosition,
+          place.name,
+          place.category,
+          place.id,
+          place.address,
+        ]);
       }
     });
     setInMapPosition([...inMapData]);
@@ -144,11 +158,10 @@ export default function Map({ category, searchKeyword }) {
       removeMarker();
     }
 
-    console.log("inMapData : ", inMapPosition, markers.current);
     if (inMapPosition.length > 0) {
       console.log("inmap", inMapPosition);
       inMapPosition.forEach((data) => {
-        addMarker(data[0], data[1], data[2]);
+        addMarker(data[0], data[1], data[2], data[3]);
       });
     }
     setResultList(true);
@@ -168,11 +181,6 @@ export default function Map({ category, searchKeyword }) {
       }
     });
   }, [map, searchKeyword]);
-
-  // const imageSrc =
-  //   "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png";
-  // 검색 결과 목록이나 마커를 클릭했을 때 장소명을 표출할 인포윈도우를 생성합니다
-  const infowindow = new kakao.maps.InfoWindow({ zIndex: 1 });
 
   function getMarkerImageURL(category) {
     switch (category) {
@@ -203,8 +211,9 @@ export default function Map({ category, searchKeyword }) {
         return "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png";
     }
   }
-  function addMarker(placePosition, placeName, dataCategory) {
-    console.log("지도 : ", map);
+  const navigate = useNavigate();
+
+  function addMarker(placePosition, placeName, dataCategory, dataId) {
     // 마커 이미지를 생성합니다
     const imageSize = new kakao.maps.Size(24, 35);
     const markerImageURL = getMarkerImageURL(dataCategory); // 카테고리에 따른 이미지 URL 가져오기
@@ -219,15 +228,41 @@ export default function Map({ category, searchKeyword }) {
       position: placePosition,
       image: markerImage,
       title: placeName + dataCategory,
+      clickable: true,
     });
 
     markers.current.push(marker);
     marker.setMap(map);
+    // 마커를 클릭했을 때 마커 위에 표시할 인포윈도우를 생성합니다
+    var iwContent = '<div style="padding:5px;">Hello World!</div>', // 인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
+      iwRemoveable = true; // removeable 속성을 ture 로 설정하면 인포윈도우를 닫을 수 있는 x버튼이 표시됩니다
+
+    // 인포윈도우를 생성합니다
+    var infowindow = new kakao.maps.InfoWindow({
+      content: iwContent,
+      removable: iwRemoveable,
+    });
+
+    // 마커에 클릭이벤트를 등록합니다
+    kakao.maps.event.addListener(marker, "mouseover", function () {
+      // 마커 위에 인포윈도우를 표시합니다
+      infowindow.open(map, marker);
+    });
+
+    // 마커에 마우스아웃 이벤트를 등록합니다
+    kakao.maps.event.addListener(marker, "mouseout", function () {
+      // 마커에 마우스아웃 이벤트가 발생하면 인포윈도우를 제거합니다
+      infowindow.close();
+    });
+
+    // 마커에 클릭 이벤트를 등록합니다
+    kakao.maps.event.addListener(marker, "click", function () {
+      navigate(`/detail/${dataId}`);
+    });
   }
   function removeMarker() {
     for (var i = 0; i < markers.current.length; i++) {
       markers.current[i].setMap(null);
-      console.log("remove");
     }
     markers.current = [];
   }
@@ -246,13 +281,13 @@ export default function Map({ category, searchKeyword }) {
       ></div>
       {resultList ? (
         <ResultList>
-          <ListHeader>{categoryConverter(category)}로 분류한 결과</ListHeader>
+          {/* <ListHeader>{categoryConverter(category)}로 분류한 결과</ListHeader> */}
           {inMapPosition.map((data, index) => (
-            <ListEl key={index}>
+            <ListEl key={index} to={`/detail/${data[3]}`}>
               <ListElImage src={getElImage(data[2])} />
               <ListElText>
                 <ListElTitle>{data[1]}</ListElTitle>
-                <ListElAddress>{data[2]}</ListElAddress>
+                <ListElAddress>{data[4]}</ListElAddress>
               </ListElText>
             </ListEl>
           ))}
