@@ -33,7 +33,7 @@ export default function Header({ setCategory, setSearchKeyword }) {
   //   ]);
   // }
   const handleSubmit = (e) => {
-    if (e.key == "Enter") {
+    if (e.key === "Enter") {
       setSearchKeyword(e.target.value);
     }
   };
@@ -59,7 +59,7 @@ export default function Header({ setCategory, setSearchKeyword }) {
             className="fa-solid fa-bars fa-lg"
             style={{ color: "#5D794C" }}
           ></i>
-          <img src={logo} />
+          <img src={logo} alt="driver logo" />
           <i
             className="fa-solid fa-magnifying-glass fa-lg"
             onClick={() => {
