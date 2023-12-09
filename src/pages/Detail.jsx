@@ -5,6 +5,9 @@ import styled from "styled-components";
 import greenLightImg from "../images/greenLight.png";
 import placePrev from "../images/placePrev.png";
 
+const DetailBody = styled.div`
+  overflow-x: hidden;
+`;
 const DetailStyled = styled.div`
   display: flex;
   flex-direction: column;
@@ -19,7 +22,7 @@ const DataStyled = styled.div`
 const ImageStyled = styled.div`
   display: flex;
   flex-direction: row;
-  overflow: scroll;
+  overflow-x: scroll;
   width: max-content;
 `;
 const PlaceImg = styled.img`
@@ -100,6 +103,7 @@ const UserName = styled.div`
   margin-top: 12px;
 `;
 const DetailPageHeader = styled.div`
+  width: 100%;
   height: 60px;
   display: flex;
   flex-direction: row;
@@ -116,7 +120,7 @@ export default function Detail() {
   console.log(param, "hi");
 
   return (
-    <>
+    <DetailBody>
       <DetailPageHeader>
         <Link to="/">
           <i
@@ -233,6 +237,6 @@ export default function Detail() {
           </EachReview>
         </Review>
       </DetailStyled>
-    </>
+    </DetailBody>
   );
 }

@@ -71,7 +71,7 @@ export default function Map({ category, searchKeyword }) {
     const kakaoMap = new kakao.maps.Map(container, options); // 지도 생성 및 객체 리턴
     setMap(kakaoMap); // 화면에 지도 표시
 
-    const bounds = new kakao.maps.LatLngBounds();
+    // const bounds = new kakao.maps.LatLngBounds();
     // setBounds(bounds);
     if (map === null) {
       return;
@@ -82,6 +82,7 @@ export default function Map({ category, searchKeyword }) {
 
   // 초기 지도 중심 설정
   useEffect(() => {
+    initMap(37.4963538, 126.9572222);
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (position) => {

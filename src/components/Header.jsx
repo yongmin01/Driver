@@ -18,20 +18,6 @@ const HeaderInput = styled.input`
 
 export default function Header({ setCategory, setSearchKeyword }) {
   const [searchClicked, setSearchClicked] = useState(false);
-  // const [inputText, setInputText] = useState("");
-  // const [inputCategory, setInputCategory] = useState("all");
-
-  // function filter() {
-  //   // 전체인 경우
-  //   if (inputCategory === "all") {
-  //     setFilteredData([...data.places]);
-  //     return;
-  //   }
-  //   // 필터링
-  //   setFilteredData([
-  //     ...data.places.filter((data) => data.category === inputCategory),
-  //   ]);
-  // }
   const handleSubmit = (e) => {
     if (e.key === "Enter") {
       setSearchKeyword(e.target.value);
