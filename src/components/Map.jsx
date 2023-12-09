@@ -60,7 +60,7 @@ export default function Map({ category, searchKeyword }) {
   const kakaoMapRef = useRef(null); // 지도를 담을 공간 생성
   const [resultList, setResultList] = useState(false);
   const [inMapPosition, setInMapPosition] = useState([]);
-  // const [bounds, setBounds] = useState(null);
+  const [bounds, setBounds] = useState(null);
 
   const initMap = (lat, lon) => {
     const container = kakaoMapRef.current; // 지도
@@ -72,7 +72,7 @@ export default function Map({ category, searchKeyword }) {
     setMap(kakaoMap); // 화면에 지도 표시
 
     const bounds = new kakao.maps.LatLngBounds();
-    setBounds(bounds);
+    // setBounds(bounds);
     if (map === null) {
       return;
     } else {
