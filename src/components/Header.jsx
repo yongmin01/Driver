@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import data from "../dummy";
-import logo from "../images/LOGO.png";
+import logo from "../images/logo.png";
 const Header_ = styled.div`
   display: flex;
   justify-content: space-between;
