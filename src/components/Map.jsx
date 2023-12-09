@@ -29,12 +29,6 @@ const ResultList = styled.div`
   z-index: 10;
 `;
 
-const ListHeader = styled.div`
-  padding: 20px;
-  border-bottom: 1px solid #ddd;
-  position: relative;
-`;
-
 const ListEl = styled(Link)`
   display: flex;
   width: 358px;
@@ -94,7 +88,9 @@ export default function Map({ category, searchKeyword }) {
         (position) => {
           const lat = position.coords.latitude;
           const lon = position.coords.longitude;
-
+          // 상도동 위치
+          // const lat = 37.4963538;
+          // const lon = 126.9572222;
           initMap(lat, lon);
         },
         (error) => {
@@ -159,19 +155,20 @@ export default function Map({ category, searchKeyword }) {
     }
 
     if (inMapPosition.length > 0) {
-      console.log("inmap", inMapPosition);
       inMapPosition.forEach((data) => {
         addMarker(data[0], data[1], data[2], data[3]);
       });
+      if (searchKeyword !== "") {
+        setResultList(true);
+      }
     }
-    setResultList(true);
   }, [inMapPosition]);
 
   // 검색
   useEffect(() => {
     if (map === null) return;
     if (!searchKeyword) return;
-    setResultList(true); // 모달창 띄우기
+
     const geocoder = new kakao.maps.services.Geocoder();
 
     geocoder.addressSearch(`${searchKeyword}`, function (result, status) {
@@ -233,30 +230,32 @@ export default function Map({ category, searchKeyword }) {
 
     markers.current.push(marker);
     marker.setMap(map);
-    // 마커를 클릭했을 때 마커 위에 표시할 인포윈도우를 생성합니다
-    var iwContent = '<div style="padding:5px;">Hello World!</div>', // 인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
-      iwRemoveable = true; // removeable 속성을 ture 로 설정하면 인포윈도우를 닫을 수 있는 x버튼이 표시됩니다
+    // 마커 hover시 마커 위에 표시할 인포윈도우를 생성합니다
+    let iwContent = `<div>${placeName}</div>`; // 인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
+    // iwRemoveable = true;
+    // removeable 속성을 ture 로 설정하면 인포윈도우를 닫을 수 있는 x버튼이 표시됩니다
 
     // 인포윈도우를 생성합니다
-    var infowindow = new kakao.maps.InfoWindow({
+    let infowindow = new kakao.maps.InfoWindow({
       content: iwContent,
-      removable: iwRemoveable,
+      // removable: iwRemoveable,
     });
 
-    // 마커에 클릭이벤트를 등록합니다
-    kakao.maps.event.addListener(marker, "mouseover", function () {
-      // 마커 위에 인포윈도우를 표시합니다
-      infowindow.open(map, marker);
-    });
+    // 마커에 mouseover 이벤트를 등록합니다
+    // kakao.maps.event.addListener(marker, "mouseover", function () {
+    //   // 마커 위에 인포윈도우를 표시합니다
+    //   infowindow.open(map, marker);
+    // });
 
-    // 마커에 마우스아웃 이벤트를 등록합니다
-    kakao.maps.event.addListener(marker, "mouseout", function () {
-      // 마커에 마우스아웃 이벤트가 발생하면 인포윈도우를 제거합니다
-      infowindow.close();
-    });
+    // // 마커에 마우스아웃 이벤트를 등록합니다
+    // kakao.maps.event.addListener(marker, "mouseout", function () {
+    //   // 마커에 마우스아웃 이벤트가 발생하면 인포윈도우를 제거합니다
+    //   infowindow.close();
+    // });
 
     // 마커에 클릭 이벤트를 등록합니다
     kakao.maps.event.addListener(marker, "click", function () {
+      console.log("goto detil!");
       navigate(`/detail/${dataId}`);
     });
   }
