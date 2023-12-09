@@ -1,5 +1,5 @@
 import { React, useState, useEffect, useRef } from "react";
-import styled, { keyframes } from "styled-components";
+import styled from "styled-components";
 import data from "../dummy";
 import pinA from "../images/pin A.png";
 import pinB from "../images/pin B.png";
@@ -8,7 +8,6 @@ import placeImg from "../images/place.png";
 import carImg from "../images/car.png";
 import routeImg from "../images/route.png";
 import passengerImg from "../images/passenger.png";
-import categoryConverter from "../utils/categoryConverter";
 import { Link, useNavigate } from "react-router-dom";
 
 const { kakao } = window;
@@ -61,7 +60,7 @@ export default function Map({ category, searchKeyword }) {
   const kakaoMapRef = useRef(null); // 지도를 담을 공간 생성
   const [resultList, setResultList] = useState(false);
   const [inMapPosition, setInMapPosition] = useState([]);
-  const [bounds, setBounds] = useState(null);
+  // const [bounds, setBounds] = useState(null);
 
   const initMap = (lat, lon) => {
     const container = kakaoMapRef.current; // 지도
@@ -103,6 +102,7 @@ export default function Map({ category, searchKeyword }) {
       // 기본 위치로 초기화
       initMap(33.450701, 126.570667);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // 화면상 지도에 데이터가 포함되는지 확인
@@ -141,11 +141,13 @@ export default function Map({ category, searchKeyword }) {
         checkInMap();
       });
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [map]);
 
   useEffect(() => {
     if (map === null) return;
     checkInMap();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [category]);
 
   // inmapPosition이 변경될 때마다 마커 추가
@@ -177,6 +179,7 @@ export default function Map({ category, searchKeyword }) {
         map.setCenter(coords);
       }
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [map, searchKeyword]);
 
   function getMarkerImageURL(category) {
@@ -236,10 +239,10 @@ export default function Map({ category, searchKeyword }) {
     // removeable 속성을 ture 로 설정하면 인포윈도우를 닫을 수 있는 x버튼이 표시됩니다
 
     // 인포윈도우를 생성합니다
-    let infowindow = new kakao.maps.InfoWindow({
-      content: iwContent,
-      // removable: iwRemoveable,
-    });
+    // let infowindow = new kakao.maps.InfoWindow({
+    //   content: iwContent,
+    //   // removable: iwRemoveable,
+    // });
 
     // 마커에 mouseover 이벤트를 등록합니다
     // kakao.maps.event.addListener(marker, "mouseover", function () {

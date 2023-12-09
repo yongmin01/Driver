@@ -4,7 +4,6 @@ import data from "../dummy";
 import styled from "styled-components";
 import greenLightImg from "../images/greenLight.png";
 import placePrev from "../images/placePrev.png";
-import Header from "../components/Header";
 
 const DetailStyled = styled.div`
   display: flex;
